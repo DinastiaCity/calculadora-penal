@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora Penal - Dinastia City</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f4f8;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    .crime-list {
+      margin-top: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+    label {
+      display: block;
+      margin: 5px 0;
+      color: #444;
+    }
+    .field {
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Calculadora Penal - Dinastia City RP</h2>
+    <form id="crimeForm" class="crime-list">
+      <label><input type="checkbox" value="80,5000"> Homicídio Doloso (80 meses / $5000)</label><br>
+      <label><input type="checkbox" value="40,2000"> Homicídio Culposo (40 meses / $2000)</label><br>
+      <label><input type="checkbox" value="50,3000"> Tentativa de Homicídio (50 meses / $3000)</label><br>
+      <label><input type="checkbox" value="30,2000"> Lesão Corporal Grave (30 meses / $2000)</label><br>
+      <label><input type="checkbox" value="15,1000"> Lesão Corporal Leve (15 meses / $1000)</label><br>
+      <label><input type="checkbox" value="50,3000"> Roubo (50 meses / $3000)</label><br>
+      <label><input type="checkbox" value="70,4000"> Assalto à Mão Armada (70 meses / $4000)</label><br>
+      <label><input type="checkbox" value="30,2000"> Furto (30 meses / $2000)</label><br>
+      <label><input type="checkbox" value="100,8000"> Sequestro (100 meses / $8000)</label><br>
+      <label><input type="checkbox" value="20,1500"> Invasão de Propriedade (20 meses / $1500)</label><br>
+      <label><input type="checkbox" value="40,3000"> Extorsão (40 meses / $3000)</label><br>
+      <label><input type="checkbox" value="70,6000"> Corrupção Ativa ou Passiva (70 meses / $6000)</label><br>
+      <label><input type="checkbox" value="20,1000"> Desobediência (20 meses / $1000)</label><br>
+      <label><input type="checkbox" value="30,2000"> Falsidade Ideológica (30 meses / $2000)</label><br>
+      <label><input type="checkbox" value="60,5000"> Fuga da Prisão (60 meses / $5000)</label><br>
+      <label><input type="checkbox" value="40,3000"> Ameaça a Agente Público (40 meses / $3000)</label><br>
+      <label><input type="checkbox" value="50,4000"> Tentativa de Suborno (50 meses / $4000)</label><br>
+      <label><input type="checkbox" value="30,2000"> Porte Ilegal de Arma Leve (30 meses / $2000)</label><br>
+      <label><input type="checkbox" value="60,4000"> Porte de Arma Pesada (60 meses / $4000)</label><br>
+      <label><input type="checkbox" value="80,5000"> Tráfico de Drogas (80 meses / $5000)</label><br>
+      <label><input type="checkbox" value="100,6000"> Produção de Drogas (100 meses / $6000)</label><br>
+      <label><input type="checkbox" value="150,10000"> Formação de Facção (150 meses / $10000)</label><br>
+      <label><input type="checkbox" value="20,1500"> Direção Perigosa (20 meses / $1500)</label><br>
+      <label><input type="checkbox" value="25,2000"> Racha / Corrida Ilegal (25 meses / $2000)</label><br>
+      <label><input type="checkbox" value="20,1500"> Omissão de Socorro (20 meses / $1500)</label><br>
+      <label><input type="checkbox" value="30,2000"> Atropelamento (30 meses / $2000)</label><br>
+      <label><input type="checkbox" value="40,3000"> Atentado ao Pudor (40 meses / $3000)</label><br>
+      <label><input type="checkbox" value="10,0"> Uso de Máscara em Assalto (10 meses / $0)</label><br>
+      <label><input type="checkbox" value="15,1000"> Desordem Pública (15 meses / $1000)</label><br>
+      <label><input type="checkbox" value="30,2000"> Incitação ao Crime (30 meses / $2000)</label><br>
+    </form>
+    <div class="field">
+      <label><input type="checkbox" id="temAdvogado"> O acusado está com advogado?</label>
+    </div>
+    <button type="button" onclick="calcular()">Calcular Pena</button>
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    function calcular() {
+      let totalMeses = 0;
+      let totalMulta = 0;
+      const checkboxes = document.querySelectorAll('#crimeForm input[type="checkbox"]:checked');
+      checkboxes.forEach(cb => {
+        const [meses, multa] = cb.value.split(',').map(Number);
+        totalMeses += meses;
+        totalMulta += multa;
+      });
+
+      const advogado = document.getElementById('temAdvogado').checked;
+      if (advogado && totalMeses > 0) {
+        totalMeses = Math.floor(totalMeses * 0.85);  // 15% de redução
+        totalMulta = Math.floor(totalMulta * 0.85);
+      }
+
+      let resultado = "";
+      if (totalMeses > 0) {
+        resultado = `Pena total: ${totalMeses} meses | Multa total: ${totalMulta.toLocaleString()}`;
+        if (advogado) resultado += " (com advogado)";
+      } else {
+        resultado = "Nenhum crime selecionado.";
+      }
+      document.getElementById('resultado').innerText = resultado;
+    }
+  </script>
+</body>
+</html>
